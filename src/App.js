@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Counter from './components/Counter';
 import Dropdown from './components/Dropdown/Dropdown';
 import ColorPicker from './components/ColorPicker/ColorPicker';
+import ToDoList from './components/ToDoList';
+import initialToDos from './toDos.json';
 
 const colorPickerOptions = [
   { label: 'red', color: '#F44336' },
@@ -12,12 +14,33 @@ const colorPickerOptions = [
   { label: 'indigo', color: '#3F51B5' },
 ];
 
-const App = () => (
-  <>
-    <h1>Object State </h1>
-    <Counter initialValue={10} />
-    <Dropdown />
-    <ColorPicker options={colorPickerOptions} />
-  </>
-);
+class App extends Component {
+  state = {
+    todos: initialToDos,
+  };
+  deleteTodo = todoId => {
+    this.setState(prevState => ({
+      todos: prevState.todos.filter(todo => todo.id !== todoId),
+    }));
+  };
+  render() {
+    const { todos } = this.state;
+    return (
+      <>
+        <h1>Object State </h1>
+        <ToDoList todos={todos} onDeleteToDo={this.deleteTodo} />
+        <div>
+          <p>Total amount: {todos.length}</p>
+          <p>
+            Total done:{' '}
+            {todos.reduce((acc, todo) => (todo.completed ? acc + 1 : acc), 0)}
+          </p>
+        </div>
+        <Counter initialValue={10} />
+        <Dropdown />
+        <ColorPicker options={colorPickerOptions} />
+      </>
+    );
+  }
+}
 export default App;
