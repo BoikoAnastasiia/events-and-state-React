@@ -4,6 +4,8 @@ import Dropdown from './components/Dropdown/Dropdown';
 import ColorPicker from './components/ColorPicker/ColorPicker';
 import ToDoList from './components/ToDoList';
 import initialToDos from './toDos.json';
+import Container from './components/Container/Container';
+import Forms from './components/Forms/Forms';
 
 const colorPickerOptions = [
   { label: 'red', color: '#F44336' },
@@ -20,9 +22,8 @@ class App extends Component {
     todos: initialToDos,
   };
 
-  handleInputChange = event => {
-    console.log(event.currentTarget.value);
-    this.setState({ inputValue: event.currentTarget.value });
+  formSubmitHandler = data => {
+    console.log(data);
   };
 
   deleteTodo = todoId => {
@@ -34,12 +35,8 @@ class App extends Component {
   render() {
     const { todos } = this.state;
     return (
-      <>
-        <input
-          type="text"
-          value={this.state.inputValue}
-          onChange={this.handleInputChange}
-        />
+      <Container>
+        <Forms onSubmit={this.formSubmitHandler} />
 
         <h1>Object State </h1>
         <ToDoList todos={todos} onDeleteToDo={this.deleteTodo} />
@@ -53,7 +50,7 @@ class App extends Component {
         <Counter initialValue={10} />
         <Dropdown />
         <ColorPicker options={colorPickerOptions} />
-      </>
+      </Container>
     );
   }
 }
