@@ -16,17 +16,31 @@ const colorPickerOptions = [
 
 class App extends Component {
   state = {
+    inputValue: '',
     todos: initialToDos,
   };
+
+  handleInputChange = event => {
+    console.log(event.currentTarget.value);
+    this.setState({ inputValue: event.currentTarget.value });
+  };
+
   deleteTodo = todoId => {
     this.setState(prevState => ({
       todos: prevState.todos.filter(todo => todo.id !== todoId),
     }));
   };
+
   render() {
     const { todos } = this.state;
     return (
       <>
+        <input
+          type="text"
+          value={this.state.inputValue}
+          onChange={this.handleInputChange}
+        />
+
         <h1>Object State </h1>
         <ToDoList todos={todos} onDeleteToDo={this.deleteTodo} />
         <div>
