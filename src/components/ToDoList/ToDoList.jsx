@@ -1,7 +1,6 @@
 // import { Component } from 'react';
-import './ToDoList.css';
 import classNames from 'classnames';
-import './TodoList.scss';
+import './ToDoList.scss';
 
 const ToDoList = ({ todos, onDeleteToDo, onToggleCompleted }) => (
   <ul className="TodoList">
@@ -16,7 +15,7 @@ const ToDoList = ({ todos, onDeleteToDo, onToggleCompleted }) => (
           type="checkbox"
           className="TodoList__checkbox"
           checked={completed}
-          onChange={() => onToggleCompleted}
+          onChange={() => onToggleCompleted(id)}
         />
         <p className="TodoList__text">{text} </p>
         <button

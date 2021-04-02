@@ -6,6 +6,8 @@ import ToDoList from './components/ToDoList';
 import initialToDos from './toDos.json';
 import Container from './components/Container/Container';
 import Forms from './components/Forms/Forms';
+import shortid from 'shortid';
+import TodoEditor from './components/ToDOEditor/TodoEditor';
 
 const colorPickerOptions = [
   { label: 'red', color: '#F44336' },
@@ -26,6 +28,18 @@ class App extends Component {
     console.log(data);
   };
 
+  addTodo = text => {
+    const todo = {
+      id: shortid.generate(),
+      text,
+      completed: false,
+    };
+
+    this.setState(({ todos }) => ({
+      todos: [todo, ...todos],
+    }));
+  };
+
   deleteTodo = todoId => {
     this.setState(prevState => ({
       todos: prevState.todos.filter(todo => todo.id !== todoId),
@@ -33,15 +47,23 @@ class App extends Component {
   };
 
   toggleCompleted = todoId => {
-    console.log(todoId);
-    this.setState(prevState => ({
-      todos: prevState.todos.map(todo => {
-        if (todo.id === todoId) {
-          console.log('found the correct Id');
-          return { ...todo, completed: !todo.completed };
-        }
-        return todo;
-      }),
+    // this.setState(prevState => ({
+    //   todos: prevState.todos.map(todo => {
+    //     if (todo.id === todoId) {
+    //       return {
+    //         ...todo,
+    //         completed: !todo.completed,
+    //       };
+    //     }
+
+    //     return todo;
+    //   }),
+    // }));
+
+    this.setState(({ todos }) => ({
+      todos: todos.map(todo =>
+        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo,
+      ),
     }));
   };
 
@@ -49,10 +71,15 @@ class App extends Component {
     const { todos } = this.state;
     return (
       <Container>
+        <TodoEditor />
         <Forms onSubmit={this.formSubmitHandler} />
 
         <h1>Object State </h1>
-        <ToDoList todos={todos} onDeleteToDo={this.deleteTodo} />
+        <ToDoList
+          todos={todos}
+          onDeleteToDo={this.deleteTodo}
+          onToggleCompleted={this.toggleCompleted}
+        />
         <div>
           <p>Total amount: {todos.length}</p>
           <p>
