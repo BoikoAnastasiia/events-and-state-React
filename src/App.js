@@ -8,7 +8,7 @@ import Container from './components/Container/Container';
 import Forms from './components/Forms/Forms';
 import shortid from 'shortid';
 import TodoEditor from './components/ToDOEditor/TodoEditor';
-import Filter from 'module';
+import Filter from './components/Filter';
 
 const colorPickerOptions = [
   { label: 'red', color: '#F44336' },
@@ -56,26 +56,50 @@ class App extends Component {
     }));
   };
 
-  render() {
+  changeFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
+  getFilteredTodos = () => {
+    const { filter, todos } = this.state;
+    const normilizeFilter = filter.toLowerCase();
+
+    return todos.filter(todo =>
+      todo.text.toLowerCase().includes(normilizeFilter),
+    );
+  };
+
+  calcCompletedTodos = () => {
     const { todos } = this.state;
+
+    return todos.reduce(
+      (total, todo) => (todo.completed ? total + 1 : total),
+      0,
+    );
+  };
+
+  render() {
+    const { todos, filter } = this.state;
+    const completedTodoCount = this.calcCompletedTodos();
+
+    const filteredTodos = this.getFilteredTodos();
+
     return (
       <Container>
         <Forms onSubmit={this.formSubmitHandler} />
 
         <h1>Todo List </h1>
         <TodoEditor onSubmit={this.addTodo} />
+        <Filter value={filter} onChange={this.changeFilter} />
 
         <ToDoList
-          todos={todos}
+          todos={filteredTodos}
           onDeleteToDo={this.deleteTodo}
           onToggleCompleted={this.toggleCompleted}
         />
         <div>
           <p>Total amount: {todos.length}</p>
-          <p>
-            Total done:{' '}
-            {todos.reduce((acc, todo) => (todo.completed ? acc + 1 : acc), 0)}
-          </p>
+          <p>Total done: {completedTodoCount}</p>
         </div>
         <Counter initialValue={10} />
         <Dropdown />
