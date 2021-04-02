@@ -8,6 +8,7 @@ import Container from './components/Container/Container';
 import Forms from './components/Forms/Forms';
 import shortid from 'shortid';
 import TodoEditor from './components/ToDOEditor/TodoEditor';
+import Filter from 'module';
 
 const colorPickerOptions = [
   { label: 'red', color: '#F44336' },
@@ -22,6 +23,7 @@ class App extends Component {
   state = {
     inputValue: '',
     todos: initialToDos,
+    filter: '',
   };
 
   formSubmitHandler = data => {
@@ -47,19 +49,6 @@ class App extends Component {
   };
 
   toggleCompleted = todoId => {
-    // this.setState(prevState => ({
-    //   todos: prevState.todos.map(todo => {
-    //     if (todo.id === todoId) {
-    //       return {
-    //         ...todo,
-    //         completed: !todo.completed,
-    //       };
-    //     }
-
-    //     return todo;
-    //   }),
-    // }));
-
     this.setState(({ todos }) => ({
       todos: todos.map(todo =>
         todo.id === todoId ? { ...todo, completed: !todo.completed } : todo,
@@ -71,10 +60,11 @@ class App extends Component {
     const { todos } = this.state;
     return (
       <Container>
-        <TodoEditor />
         <Forms onSubmit={this.formSubmitHandler} />
 
-        <h1>Object State </h1>
+        <h1>Todo List </h1>
+        <TodoEditor onSubmit={this.addTodo} />
+
         <ToDoList
           todos={todos}
           onDeleteToDo={this.deleteTodo}
