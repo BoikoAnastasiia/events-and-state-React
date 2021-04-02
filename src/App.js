@@ -32,6 +32,19 @@ class App extends Component {
     }));
   };
 
+  toggleCompleted = todoId => {
+    console.log(todoId);
+    this.setState(prevState => ({
+      todos: prevState.todos.map(todo => {
+        if (todo.id === todoId) {
+          console.log('found the correct Id');
+          return { ...todo, completed: !todo.completed };
+        }
+        return todo;
+      }),
+    }));
+  };
+
   render() {
     const { todos } = this.state;
     return (
