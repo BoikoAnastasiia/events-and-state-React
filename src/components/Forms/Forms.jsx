@@ -4,6 +4,11 @@ import shortid from 'shortid';
 class Forms extends Component {
   loginInputId = shortid.generate();
 
+  handleLicence = event => {
+    console.log(event.currentTarget.checked);
+    this.setState({ licence: event.currentTarget.checked });
+  };
+
   handleChange = event => {
     const { name, value } = event.currentTarget;
 
@@ -44,7 +49,6 @@ class Forms extends Component {
             onChange={this.handleChange}
           ></input>
         </label>
-        <button type="submit">Send </button>
 
         <p>Your level as a developer: </p>
         <label htmlFor="">nobody</label>
@@ -75,8 +79,17 @@ class Forms extends Component {
         />
 
         <label htmlFor="">
-          <input type="checkbox" name="licence" /> Agree with licence
+          <input
+            type="checkbox"
+            name="licence"
+            checked={this.state.licence}
+            onChange={this.handleLicence}
+          />
+          Agree with licence
         </label>
+        <button type="submit" disabled={!this.state.licence}>
+          Send{' '}
+        </button>
       </form>
     );
   }
