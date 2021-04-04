@@ -2,93 +2,105 @@ import { Component } from 'react';
 import shortid from 'shortid';
 
 class Forms extends Component {
-  loginInputId = shortid.generate();
+  nameInputId = shortid.generate();
+  tagInputId = shortid.generate();
 
-  handleLicence = event => {
-    console.log(event.currentTarget.checked);
-    this.setState({ licence: event.currentTarget.checked });
-  };
-
-  handleChange = event => {
-    const { name, value } = event.currentTarget;
+  handleChange = e => {
+    const { name, value } = e.currentTarget;
 
     this.setState({ [name]: value });
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    console.log(this.state);
+  handleSubmit = e => {
+    e.preventDefault();
+
     this.props.onSubmit(this.state);
+
     this.reset();
+  };
+
+  handleLicenceChange = e => {
+    console.log(e.currentTarget.checked);
+
+    this.setState({ licence: e.currentTarget.checked });
   };
 
   reset = () => {
     this.setState({ name: '', tag: '' });
   };
 
-  state = { name: '', tag: '', experience: 'nobody', licence: false };
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label htmlFor={this.loginInputId}>
-          Name
+        <label htmlFor={this.nameInputId}>
+          Имя
           <input
-            id={this.loginInputId}
             type="text"
             name="name"
             value={this.state.name}
             onChange={this.handleChange}
+            id={this.nameInputId}
           />
         </label>
-        <label>
-          Second Name
+        <br />
+        <label htmlFor={this.tagInputId}>
+          Прозвище
           <input
             type="text"
             name="tag"
             value={this.state.tag}
             onChange={this.handleChange}
-          ></input>
+            id={this.tagInputId}
+          />
         </label>
 
-        <p>Your level as a developer: </p>
-        <label htmlFor="">nobody</label>
-        <input
-          type="radio"
-          name="experience"
-          value="nobody"
-          onChange={this.handleChange}
-          checked={this.state.experience === 'nobody'}
-        />
-        <label htmlFor="">minijunior</label>
+        <p>Ваш уровень:</p>
+        <label>
+          <input
+            type="radio"
+            name="experience"
+            value="junior"
+            onChange={this.handleChange}
+            checked={this.state.experience === 'junior'}
+          />
+          Junior
+        </label>
 
-        <input
-          type="radio"
-          name="experience"
-          value="minijunior"
-          onChange={this.handleChange}
-          checked={this.state.experience === 'minijunior'}
-        />
-        <label htmlFor="">junior</label>
+        <label>
+          <input
+            type="radio"
+            name="experience"
+            value="middle"
+            onChange={this.handleChange}
+            checked={this.state.experience === 'middle'}
+          />
+          Middle
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="experience"
+            value="senior"
+            onChange={this.handleChange}
+            checked={this.state.experience === 'senior'}
+          />
+          Senior
+        </label>
 
-        <input
-          type="radio"
-          name="experience"
-          value="junior"
-          onChange={this.handleChange}
-          checked={this.state.experience === 'junior'}
-        />
+        <br />
 
-        <label htmlFor="">
+        <label>
           <input
             type="checkbox"
             name="licence"
             checked={this.state.licence}
-            onChange={this.handleLicence}
+            onChange={this.handleLicenceChange}
           />
-          Agree with licence
+          Согласен с условием
         </label>
+
         <button type="submit" disabled={!this.state.licence}>
-          Send{' '}
+          Отправить
         </button>
       </form>
     );
