@@ -20,15 +20,12 @@ class Forms extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-
     this.props.onSubmit(this.state);
-
     this.reset();
   };
 
   handleLicenceChange = e => {
     console.log(e.currentTarget.checked);
-
     this.setState({ licence: e.currentTarget.checked });
   };
 
