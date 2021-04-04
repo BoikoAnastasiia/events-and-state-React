@@ -5,6 +5,13 @@ class Forms extends Component {
   nameInputId = shortid.generate();
   tagInputId = shortid.generate();
 
+  state = {
+    name: '',
+    tag: '',
+    experience: 'junior',
+    licence: false,
+  };
+
   handleChange = e => {
     const { name, value } = e.currentTarget;
 
